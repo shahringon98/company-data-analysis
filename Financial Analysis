@@ -1,0 +1,73 @@
+# Import necessary libraries
+import pandas as pd
+
+# Load your financial dataset (replace 'financial_data.csv' with your actual dataset file)
+data = pd.read_csv('financial_data.csv')
+
+# Display the first few rows of the dataset
+print("First few rows of the dataset:")
+print(data.head())
+
+# Calculate the total revenue
+total_revenue = data['Revenue'].sum()
+print(f"\nTotal Revenue: ${total_revenue:,.2f}")
+
+# Calculate the total costs
+total_costs = data['Costs'].sum()
+print(f"Total Costs: ${total_costs:,.2f}")
+
+# Calculate the total profit (Revenue - Costs)
+data['Profit'] = data['Revenue'] - data['Costs']
+total_profit = data['Profit'].sum()
+print(f"Total Profit: ${total_profit:,.2f}")
+
+# Calculate the profit margin (Profit / Revenue)
+data['Profit_Margin'] = data['Profit'] / data['Revenue'] * 100
+average_profit_margin = data['Profit_Margin'].mean()
+print(f"Average Profit Margin: {average_profit_margin:.2f}%")
+
+# Calculate the return on investment (ROI)
+data['Investment'] = data['Investment']  # Make sure your dataset has this column for investments
+data['ROI'] = (data['Profit'] / data['Investment']) * 100
+average_roi = data['ROI'].mean()
+print(f"Average Return on Investment (ROI): {average_roi:.2f}%")
+
+# Optional: Calculate other key financial metrics like cost-to-revenue ratio
+data['Cost_to_Revenue_Ratio'] = data['Costs'] / data['Revenue'] * 100
+average_cost_ratio = data['Cost_to_Revenue_Ratio'].mean()
+print(f"Average Cost to Revenue Ratio: {average_cost_ratio:.2f}%")
+
+# Example: Generate financial summary for each period (e.g., month or quarter)
+financial_summary = data[['Revenue', 'Costs', 'Profit', 'Profit_Margin', 'ROI']].describe()
+print("\nFinancial Summary (Descriptive Statistics):")
+print(financial_summary)
+
+# Save the detailed financial data with calculations to a new CSV file
+data.to_csv('financial_analysis_with_metrics.csv', index=False)
+
+
+Explanation:
+Total Revenue: Summing the 'Revenue' column gives you the total revenue earned by the company over the period in the dataset.
+
+Total Costs: The same method is applied to the 'Costs' column to calculate total costs.
+
+Profit Calculation: Profit is calculated by subtracting Costs from Revenue for each entry.
+
+Profit Margin: The profit margin shows how much profit is made from each dollar of revenue. It’s calculated as (Profit / Revenue) * 100.
+
+Return on Investment (ROI): ROI measures the efficiency of investments. It’s calculated as (Profit / Investment) * 100. The Investment column must be present in your dataset.
+
+Cost-to-Revenue Ratio: This ratio shows how much of the revenue is consumed by costs, helping you understand operational efficiency.
+
+Financial Summary: This step generates basic descriptive statistics (mean, min, max, etc.) for key financial metrics like Revenue, Profit, and ROI.
+
+Saving Results: The financial data with calculated metrics is saved to a new CSV file (financial_analysis_with_metrics.csv) for further review.
+
+What It’s For:
+Evaluating Business Performance: By calculating revenue, profit, ROI, and other metrics, you can assess how well a company is performing financially.
+
+Decision-Making: These insights help guide decisions on where to cut costs, invest, or improve operations.
+
+Profitability and Efficiency: Analyzing profit margins and cost ratios gives insight into how efficiently a company is generating profit from its revenue.
+
+This code helps perform a thorough financial analysis, making it easy to evaluate a company’s financial health.
