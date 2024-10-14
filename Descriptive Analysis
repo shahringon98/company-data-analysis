@@ -1,1 +1,44 @@
+# Import necessary libraries
+import pandas as pd
 
+# Load your dataset (replace 'your_data.csv' with the path to your dataset)
+data = pd.read_csv('your_data.csv')
+
+# Display the first few rows of the dataset
+print("First few rows of the dataset:")
+print(data.head())
+
+# Get the basic descriptive statistics for numerical columns
+print("\nDescriptive Statistics:")
+print(data.describe())
+
+# Get information about the dataset (data types, non-null counts)
+print("\nDataset Information:")
+print(data.info())
+
+# Calculate the median for each numerical column
+print("\nMedian Values:")
+print(data.median())
+
+# Check for missing values
+print("\nMissing Values in Each Column:")
+print(data.isnull().sum())
+
+# Show the correlation matrix to understand relationships between numerical variables
+print("\nCorrelation Matrix:")
+print(data.corr())
+
+# Example: Generate summary statistics for a specific column (replace 'column_name' with the actual column name)
+column_name = 'your_column_name'  # replace with your column
+print(f"\nSummary statistics for {column_name}:")
+print(data[column_name].describe())
+
+
+What It’s For:
+Exploring the Data: Before conducting any advanced analysis, it’s essential to understand what your data looks like. Descriptive statistics provide an overall snapshot of the data, allowing you to detect any issues like missing values or outliers that could affect further analysis.
+
+Identifying Patterns: You may discover trends or relationships between variables that could be useful in the next steps, like predictive modeling or operational analysis.
+
+Decision-Making: By summarizing historical data (e.g., sales, energy production, or financial metrics), companies can make informed decisions on where to improve or where issues might be arising.
+
+In short, Descriptive Analysis helps you get to know your dataset and prepares you to perform more in-depth analyses, such as forecasting, trend analysis, or anomaly detection.
