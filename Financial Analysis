@@ -1,49 +1,60 @@
-# Import necessary libraries
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Load your financial dataset (replace 'financial_data.csv' with your actual dataset file)
-data = pd.read_csv('financial_data.csv')
+# Sample financial data for a company (in millions)
+data = {
+    'Year': [2020, 2021, 2022],
+    'Revenue': [150, 200, 250],
+    'COGS': [100, 120, 160],
+    'Operating Expenses': [30, 40, 50],
+    'Net Income': [15, 25, 30],
+    'Total Assets': [300, 350, 400],
+    'Total Liabilities': [100, 120, 150],
+    'Equity': [200, 230, 250]
+}
 
-# Display the first few rows of the dataset
-print("First few rows of the dataset:")
-print(data.head())
+# Create a DataFrame
+df = pd.DataFrame(data)
 
-# Calculate the total revenue
-total_revenue = data['Revenue'].sum()
-print(f"\nTotal Revenue: ${total_revenue:,.2f}")
+# Calculate Financial Ratios
+df['Gross Profit'] = df['Revenue'] - df['COGS']
+df['Gross Margin'] = (df['Gross Profit'] / df['Revenue']) * 100
+df['Operating Margin'] = ((df['Revenue'] - df['COGS'] - df['Operating Expenses']) / df['Revenue']) * 100
+df['Net Profit Margin'] = (df['Net Income'] / df['Revenue']) * 100
+df['Return on Assets (ROA)'] = (df['Net Income'] / df['Total Assets']) * 100
+df['Return on Equity (ROE)'] = (df['Net Income'] / df['Equity']) * 100
+df['Debt-to-Equity Ratio'] = df['Total Liabilities'] / df['Equity']
 
-# Calculate the total costs
-total_costs = data['Costs'].sum()
-print(f"Total Costs: ${total_costs:,.2f}")
+# Display financial ratios
+print("Financial Analysis Summary:\n")
+print("Financial Ratios:\n")
+print(df[['Year', 'Gross Margin', 'Operating Margin', 'Net Profit Margin', 'Return on Assets (ROA)', 'Return on Equity (ROE)', 'Debt-to-Equity Ratio']])
 
-# Calculate the total profit (Revenue - Costs)
-data['Profit'] = data['Revenue'] - data['Costs']
-total_profit = data['Profit'].sum()
-print(f"Total Profit: ${total_profit:,.2f}")
+# Provide professional interpretation of the ratios for each year
+for index, row in df.iterrows():
+    print(f"\nYear {row['Year']}:\n")
+    print(f"Gross Margin: {row['Gross Margin']:.2f}% - Indicates the percentage of revenue that exceeds the cost of goods sold, showing profitability of core operations.")
+    print(f"Operating Margin: {row['Operating Margin']:.2f}% - Reflects the percentage of revenue left after covering operating expenses, highlighting operational efficiency.")
+    print(f"Net Profit Margin: {row['Net Profit Margin']:.2f}% - Shows the overall profitability after all expenses, indicating the company's ability to generate profit from revenue.")
+    print(f"Return on Assets (ROA): {row['Return on Assets (ROA)']:.2f}% - Measures how effectively the company is using its assets to generate profit.")
+    print(f"Return on Equity (ROE): {row['Return on Equity (ROE)']:.2f}% - Indicates the return generated on shareholders' equity, assessing financial performance for investors.")
+    print(f"Debt-to-Equity Ratio: {row['Debt-to-Equity Ratio']:.2f} - Represents the company's financial leverage and risk, showing the balance between debt and equity financing.")
 
-# Calculate the profit margin (Profit / Revenue)
-data['Profit_Margin'] = data['Profit'] / data['Revenue'] * 100
-average_profit_margin = data['Profit_Margin'].mean()
-print(f"Average Profit Margin: {average_profit_margin:.2f}%")
+# Visualization
+plt.figure(figsize=(10, 6))
 
-# Calculate the return on investment (ROI)
-data['Investment'] = data['Investment']  # Make sure your dataset has this column for investments
-data['ROI'] = (data['Profit'] / data['Investment']) * 100
-average_roi = data['ROI'].mean()
-print(f"Average Return on Investment (ROI): {average_roi:.2f}%")
+# Plot Revenue and Net Income
+df.plot(x='Year', y=['Revenue', 'Net Income'], kind='bar', ax=plt.gca())
+plt.title('Revenue and Net Income Over the Years')
+plt.xlabel('Year')
+plt.ylabel('Amount (in millions)')
+plt.xticks(rotation=0)
+plt.grid(axis='y', linestyle='--')
+plt.legend()
 
-# Optional: Calculate other key financial metrics like cost-to-revenue ratio
-data['Cost_to_Revenue_Ratio'] = data['Costs'] / data['Revenue'] * 100
-average_cost_ratio = data['Cost_to_Revenue_Ratio'].mean()
-print(f"Average Cost to Revenue Ratio: {average_cost_ratio:.2f}%")
-
-# Example: Generate financial summary for each period (e.g., month or quarter)
-financial_summary = data[['Revenue', 'Costs', 'Profit', 'Profit_Margin', 'ROI']].describe()
-print("\nFinancial Summary (Descriptive Statistics):")
-print(financial_summary)
-
-# Save the detailed financial data with calculations to a new CSV file
-data.to_csv('financial_analysis_with_metrics.csv', index=False)
+plt.tight_layout()
+plt.show()
 
 
 Explanation:
