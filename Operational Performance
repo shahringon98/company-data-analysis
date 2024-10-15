@@ -1,0 +1,45 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load Data from Excel File
+df = pd.read_excel('investment_company_performance_data.xlsx')
+
+# Calculate Key Performance Metrics
+df['Return_on_Investment'] = (df['Profit'] / df['Investment']) * 100
+df['Operational_Efficiency'] = df['Revenue'] / df['Operational_Costs']
+df['Risk_Rate'] = (df['Losses'] / df['Investment']) * 100
+
+# Display Summary of Investment Company Performance
+print("Investment Company Performance Summary:")
+print(df)
+
+# Generate Visual Analysis of Investment Company Performance
+plt.figure(figsize=(14, 10))
+
+# Plot Return on Investment Over Time
+plt.subplot(3, 1, 1)
+plt.plot(df['Month'], df['Return_on_Investment'], marker='o', color='b', linewidth=2)
+plt.title('Return on Investment Over Time', fontsize=14)
+plt.xlabel('Month', fontsize=12)
+plt.ylabel('ROI (%)', fontsize=12)
+plt.grid(True)
+
+# Plot Operational Efficiency Over Time
+plt.subplot(3, 1, 2)
+plt.plot(df['Month'], df['Operational_Efficiency'], marker='o', color='r', linewidth=2)
+plt.title('Operational Efficiency Over Time', fontsize=14)
+plt.xlabel('Month', fontsize=12)
+plt.ylabel('Revenue to Cost Ratio', fontsize=12)
+plt.grid(True)
+
+# Plot Risk Rate Over Time
+plt.subplot(3, 1, 3)
+plt.plot(df['Month'], df['Risk_Rate'], marker='o', color='g', linewidth=2)
+plt.title('Risk Rate Over Time', fontsize=14)
+plt.xlabel('Month', fontsize=12)
+plt.ylabel('Risk Rate (%)', fontsize=12)
+plt.grid(True)
+
+# Adjust layout to improve readability and display the plots
+plt.tight_layout()
+plt.show()
