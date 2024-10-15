@@ -1,0 +1,41 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Example variables for a financial project
+initial_investment = 10000  # Initial investment in dollars
+mean_return = 0.07           # Expected average return (7%)
+std_dev_return = 0.15        # Standard deviation of return (15%)
+time_horizon = 10            # Time horizon in years
+iterations = 10000           # Number of simulation iterations
+
+# Monte Carlo Simulation
+def monte_carlo_simulation(initial_investment, mean_return, std_dev_return, time_horizon, iterations):
+    results = []
+    for _ in range(iterations):
+        annual_returns = np.random.normal(mean_return, std_dev_return, time_horizon)
+        end_value = initial_investment
+        for r in annual_returns:
+            end_value *= (1 + r)
+        results.append(end_value)
+    return results
+
+# Run the simulation
+simulation_results = monte_carlo_simulation(initial_investment, mean_return, std_dev_return, time_horizon, iterations)
+
+# Plot the results
+plt.figure(figsize=(10, 6))
+plt.hist(simulation_results, bins=50, color='skyblue', edgecolor='black')
+plt.title('Monte Carlo Simulation of Investment Portfolio After 10 Years')
+plt.xlabel('Portfolio Value ($)')
+plt.ylabel('Frequency')
+plt.grid(True)
+plt.show()
+
+# Calculate risk metrics
+percentile_5 = np.percentile(simulation_results, 5)
+median = np.median(simulation_results)
+mean_result = np.mean(simulation_results)
+
+print(f"5th Percentile (Value at Risk): ${percentile_5:,.2f}")
+print(f"Median Portfolio Value: ${median:,.2f}")
+print(f"Mean Portfolio Value: ${mean_result:,.2f}")
