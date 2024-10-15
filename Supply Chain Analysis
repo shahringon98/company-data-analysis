@@ -1,0 +1,47 @@
+import pandas as pd
+
+# Function to perform supply chain analysis for a company
+def supply_chain_analysis(company_name, supplier_data, lead_time_data):
+    total_suppliers = len(supplier_data)
+    average_lead_time = sum(lead_time_data) / len(lead_time_data)
+
+    report = f"Supply Chain Analysis for {company_name}:
+"
+    report += f"- Total Number of Suppliers: {total_suppliers}
+"
+    report += f"- Average Lead Time: {average_lead_time:.2f} days
+"
+
+    if average_lead_time < 5:
+        report += "- The supply chain is highly efficient with a short average lead time.
+"
+    elif 5 <= average_lead_time <= 15:
+        report += "- The supply chain is moderately efficient, with a reasonable average lead time.
+"
+    else:
+        report += "- The supply chain has a long lead time, indicating potential inefficiencies or delays.
+"
+
+    return report
+
+# Load supply chain data from an Excel file
+excel_file = 'supply_chain_data.xlsx'  # Replace with the path to your Excel file
+supply_chain_data = pd.read_excel(excel_file)
+
+# Generate a supply chain analysis report for each company
+supply_chain_report = []
+for index, row in supply_chain_data.iterrows():
+    company_name = row['Company']
+    supplier_data = row['Suppliers'].split(',')  # Assuming supplier data is stored as a comma-separated string
+    lead_time_data = list(map(float, row['Lead_Times'].split(',')))  # Assuming lead time data is stored as a comma-separated string
+
+    result = supply_chain_analysis(company_name, supplier_data, lead_time_data)
+    supply_chain_report.append(result)
+
+# Save the supply chain analysis report to a text file
+report_file = 'supply_chain_analysis_report.txt'
+with open(report_file, 'w') as file:
+    for line in supply_chain_report:
+        file.write(line + '\n')
+
+print(f"The supply chain analysis report has been saved to {report_file}.")
