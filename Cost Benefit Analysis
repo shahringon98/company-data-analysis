@@ -1,0 +1,36 @@
+import pandas as pd
+
+# Function to perform cost-benefit analysis for a company
+def cost_benefit_analysis(company_name, costs, benefits):
+    total_costs = sum(costs)
+    total_benefits = sum(benefits)
+    net_benefit = total_benefits - total_costs
+
+    if net_benefit > 0:
+        return f"The project for {company_name} is financially viable, with an estimated net benefit of {net_benefit:.2f} units."
+    elif net_benefit < 0:
+        return f"The project for {company_name} is not financially viable, incurring an estimated net cost of {abs(net_benefit):.2f} units."
+    else:
+        return f"The project for {company_name} is expected to break even, with no net benefit or cost."
+
+# Load company data from an Excel file
+excel_file = 'company_data.xlsx'  # Replace with the path to your Excel file
+company_data = pd.read_excel(excel_file)
+
+# Generate a professional report for cost-benefit analysis
+report = []
+for index, row in company_data.iterrows():
+    company_name = row['Company']
+    costs = list(map(float, row['Costs'].split(',')))  # Assuming costs are stored as a comma-separated string
+    benefits = list(map(float, row['Benefits'].split(',')))  # Assuming benefits are stored as a comma-separated string
+
+    result = cost_benefit_analysis(company_name, costs, benefits)
+    report.append(result)
+
+# Save the report to a text file
+report_file = 'cost_benefit_report.txt'
+with open(report_file, 'w') as file:
+    for line in report:
+        file.write(line + '\n')
+
+print(f"The cost-benefit analysis report has been saved to {report_file}.")
