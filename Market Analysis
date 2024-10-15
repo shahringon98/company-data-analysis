@@ -1,0 +1,41 @@
+import pandas as pd
+
+# Function to perform market analysis for a company
+def market_analysis(company_name, revenue_data, market_share_data):
+    total_revenue = sum(revenue_data)
+    average_market_share = sum(market_share_data) / len(market_share_data)
+
+    report = f"Market Analysis for {company_name}:\n"
+    report += f"- Total Revenue: {total_revenue:.2f} units\n"
+    report += f"- Average Market Share: {average_market_share:.2f}%\n"
+
+    if average_market_share > 20:
+        report += "- The company holds a significant market share and is a key player in the market.\n"
+    elif 5 < average_market_share <= 20:
+        report += "- The company has a moderate market share and is a competitive participant in the market.\n"
+    else:
+        report += "- The company holds a minor market share and may need strategies to increase its competitiveness.\n"
+
+    return report
+
+# Load market data from an Excel file
+excel_file = 'market_data.xlsx'  # Replace with the path to your Excel file
+market_data = pd.read_excel(excel_file)
+
+# Generate a market analysis report for each company
+market_report = []
+for index, row in market_data.iterrows():
+    company_name = row['Company']
+    revenue_data = list(map(float, row['Revenue'].split(',')))  # Assuming revenue data is stored as a comma-separated string
+    market_share_data = list(map(float, row['Market_Share'].split(',')))  # Assuming market share data is stored as a comma-separated string
+
+    result = market_analysis(company_name, revenue_data, market_share_data)
+    market_report.append(result)
+
+# Save the market analysis report to a text file
+report_file = 'market_analysis_report.txt'
+with open(report_file, 'w') as file:
+    for line in market_report:
+        file.write(line + '\n')
+
+print(f"The market analysis report has been saved to {report_file}.")
