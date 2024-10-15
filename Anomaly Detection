@@ -1,0 +1,41 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import StandardScaler
+
+# Load data from an Excel file
+excel_file = 'financial_data.xlsx'  # Replace with the path to your Excel file
+data = pd.read_excel(excel_file)
+
+# Function to perform Anomaly Detection
+def anomaly_detection(data):
+    # Select numeric features for anomaly detection
+    numeric_data = data.select_dtypes(include=['float64', 'int64'])
+
+    # Standardize the numeric data
+    scaler = StandardScaler()
+    scaled_data = scaler.fit_transform(numeric_data)
+
+    # Fit the Isolation Forest model
+    isolation_forest = IsolationForest(n_estimators=100, contamination=0.05, random_state=42)
+    data['Anomaly'] = isolation_forest.fit_predict(scaled_data)
+
+    # Count the number of anomalies detected
+    anomaly_count = data['Anomaly'].value_counts()
+    print("Anomaly Detection Results:")
+    print(anomaly_count)
+
+    # Plot anomalies
+    anomalies = data[data['Anomaly'] == -1]
+    plt.figure(figsize=(10, 6))
+    plt.scatter(data.index, numeric_data.iloc[:, 0], color='blue', label='Normal')
+    plt.scatter(anomalies.index, anomalies.iloc[:, 0], color='red', label='Anomaly')
+    plt.xlabel('Index')
+    plt.ylabel(numeric_data.columns[0])
+    plt.title('Anomaly Detection Plot')
+    plt.legend()
+    plt.show()
+
+# Perform anomaly detection on the loaded data
+anomaly_detection(data)
